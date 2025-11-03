@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: zoho-fishbowl-demo-api
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: ZOHO_CLIENT_ID
+        sync: false
+      - key: ZOHO_CLIENT_SECRET
+        sync: false
+      - key: ZOHO_REDIRECT_URI
+        sync: false
+      - key: ZOHO_REGION
+        sync: false
+      - key: FISHBOWL_BASE_URL
+        sync: false
+      - key: FISHBOWL_USERNAME
+        sync: false
+      - key: FISHBOWL_PASSWORD
+        sync: false
