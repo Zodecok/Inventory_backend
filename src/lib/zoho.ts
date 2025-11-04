@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const REGION = (process.env.ZOHO_REGION || "au").toLowerCase();
-// Accounts/host mapping (simplified for demo)
 const ACCOUNTS_HOST = REGION === "au" ? "accounts.zoho.com.au" : "accounts.zoho.com";
 
 const CLIENT_ID = process.env.ZOHO_CLIENT_ID!;
 const CLIENT_SECRET = process.env.ZOHO_CLIENT_SECRET!;
 const REDIRECT_URI = process.env.ZOHO_REDIRECT_URI!;
 
-// Token storage — for demo, in-memory. For real use, persist to DB.
+// In-memory token store
 let token: { access_token: string; refresh_token?: string; expires_at?: number } | null = null;
 
 export function authUrl(scopes: string[]) {
@@ -61,15 +60,50 @@ export async function getAccessToken() {
   throw new Error("No Zoho token. Visit /oauth/zoho/login first.");
 }
 
-// Example Zoho Books Items list call (AU host inferred by org later if needed)
-export async function listZohoItems(apiBase: string, orgId: string) {
+export function booksBase() {
+  return REGION === "au"
+    ? "https://books.zoho.com.au/api/v3"
+    : "https://books.zoho.com/api/v3";
+}
+
+export async function getOrgId() {
+  if (process.env.ZOHO_BOOKS_ORG_ID) {
+    return process.env.ZOHO_BOOKS_ORG_ID;
+  }
   const at = await getAccessToken();
-  const { data } = await axios.get(`${apiBase}/items`, {
+  const { data } = await axios.get(`${booksBase()}/organizations`, {
+    headers: { Authorization: `Zoho-oauthtoken ${at}` }
+  });
+  if (data.organizations && data.organizations.length > 0) {
+    return data.organizations[0].organization_id;
+  }
+  throw new Error("No Zoho Books organization found");
+}
+
+export async function listBooksItems(orgId: string) {
+  const at = await getAccessToken();
+  const { data } = await axios.get(`${booksBase()}/items`, {
     headers: {
       Authorization: `Zoho-oauthtoken ${at}`,
       "X-com-zoho-books-organizationid": orgId
     },
-    params: { page: 1, per_page: 20 }
+    params: { page: 1, per_page: 50 }
   });
   return data;
+}
+
+export async function createBooksInvoice(orgId: string, payload: any) {
+  const at = await getAccessToken();
+  const { data } = await axios.post(`${booksBase()}/invoices`, payload, {
+    headers: {
+      Authorization: `Zoho-oauthtoken ${at}`,
+      "X-com-zoho-books-organizationid": orgId,
+      "Content-Type": "application/json"
+    }
+  });
+  return data;
+}
+
+export function hasToken() {
+  return token !== null && token.access_token !== undefined;
 }
