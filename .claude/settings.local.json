@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Zoho + Fishbowl Demo API setup\n\nSet up basic API structure for Render deployment with:\n- Express server with TypeScript\n- Health check endpoint\n- Zoho OAuth flow (login & callback)\n- Zoho webhooks receiver\n- Products endpoint (mock Fishbowl data)\n- Orders endpoint (stub for Zoho invoice creation)\n- Environment configuration for deployment\n- Render deployment configuration\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Zoho + Fishbowl Demo API setup\n\nSet up basic API structure for Render deployment with:\n- Express server with TypeScript\n- Health check endpoint\n- Zoho OAuth flow (login & callback)\n- Zoho webhooks receiver\n- Products endpoint (mock Fishbowl data)\n- Orders endpoint (stub for Zoho invoice creation)\n- Environment configuration for deployment\n- Render deployment configuration\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
