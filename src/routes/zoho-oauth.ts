@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authUrl, exchangeCode, hasToken } from "../lib/zoho.js";
+import { authUrl, exchangeCode, hasToken, clearToken } from "../lib/zoho.js";
 
 const r = Router();
 
@@ -24,6 +24,11 @@ r.get("/callback", async (req, res) => {
 
 r.get("/status", (_req, res) => {
   res.json({ connected: hasToken() });
+});
+
+r.post("/logout", (_req, res) => {
+  clearToken();
+  res.json({ ok: true, message: "Zoho disconnected" });
 });
 
 export default r;

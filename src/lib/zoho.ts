@@ -119,3 +119,7 @@ export async function createBooksInvoice(orgId: string, payload: any) {
 export function hasToken() {
   return token !== null && token.access_token !== undefined;
 }
+
+export function clearToken() {
+  token = null;
+}
