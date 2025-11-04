@@ -28,7 +28,7 @@ r.post("/", async (req, res) => {
       customer_name: customer?.display_name || "Demo Customer",
       email: customer?.email,
       line_items: items.map((i: any, idx: number) => ({
-        name: i.name,
+        item_name: i.name,
         rate: i.rate,
         quantity: i.quantity,
         item_order: idx + 1
