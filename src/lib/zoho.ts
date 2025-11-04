@@ -92,6 +92,18 @@ export async function listBooksItems(orgId: string) {
   return data;
 }
 
+export async function listBooksContacts(orgId: string) {
+  const at = await getAccessToken();
+  const { data } = await axios.get(`${booksBase()}/contacts`, {
+    headers: {
+      Authorization: `Zoho-oauthtoken ${at}`,
+      "X-com-zoho-books-organizationid": orgId
+    },
+    params: { status: "active", page: 1, per_page: 200 }
+  });
+  return data;
+}
+
 export async function createBooksInvoice(orgId: string, payload: any) {
   const at = await getAccessToken();
   const { data } = await axios.post(`${booksBase()}/invoices`, payload, {
