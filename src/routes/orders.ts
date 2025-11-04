@@ -54,7 +54,11 @@ r.post("/", async (req, res) => {
     if (body.customer_id) {
       const found = customers.find(c => c.id === body.customer_id);
       if (found) {
-        customer_id = found.id;
+        // Only use customer_id if it's numeric (real Zoho ID), otherwise use name
+        const isNumericId = /^\d+$/.test(found.id);
+        if (isNumericId) {
+          customer_id = found.id;
+        }
         customer_name = found.display_name || customer_name;
         customer_email = found.email || customer_email;
       }
