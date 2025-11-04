@@ -62,8 +62,8 @@ export async function getAccessToken() {
 
 export function booksBase() {
   return REGION === "au"
-    ? "https://books.zoho.com.au/api/v3"
-    : "https://books.zoho.com/api/v3";
+    ? "https://www.zohoapis.com.au/books/v3"
+    : "https://www.zohoapis.com/books/v3";
 }
 
 export async function getOrgId() {
