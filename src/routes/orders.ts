@@ -67,7 +67,8 @@ r.post("/", async (req, res) => {
     // Build Zoho Books invoice payload
     const payload: any = {
       line_items: normItems.map((i: any) => ({
-        item_name: i.name,
+        name: i.name,
+        description: i.name,
         rate: i.rate,
         quantity: i.quantity,
         item_order: i.item_order
