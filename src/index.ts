@@ -12,8 +12,8 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json({ limit: "1mb" }));
 
-const FRONTEND = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
-app.use(cors({ origin: FRONTEND, credentials: false }));
+app.use(cors());
+app.options("*", cors());
 
 app.use("/health", health);
 app.use("/oauth/zoho", zohoOAuth);
