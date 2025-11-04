@@ -3,10 +3,12 @@ import { authUrl, exchangeCode, hasToken } from "../lib/zoho.js";
 
 const r = Router();
 
-// ask for minimal scopes now; we can expand later
 const SCOPES = [
   "ZohoBooks.items.READ",
-  "ZohoBooks.invoices.CREATE"
+  "ZohoBooks.invoices.CREATE",
+  "ZohoBooks.contacts.CREATE",
+  "ZohoBooks.contacts.READ",
+  "ZohoBooks.settings.READ"
 ];
 
 r.get("/login", (_req, res) => {
