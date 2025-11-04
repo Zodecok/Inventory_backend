@@ -6,6 +6,7 @@ const r = Router();
 r.post("/", async (req, res) => {
   try {
     const { customer, items } = req.body || {};
+    console.log("Order request received:", { customer, items });
 
     // Validate at least one item with quantity > 0
     if (!Array.isArray(items) || items.length === 0) {
@@ -22,6 +23,7 @@ r.post("/", async (req, res) => {
     }
 
     const orgId = await getOrgId();
+    console.log("Using Zoho org ID:", orgId);
 
     // Build Zoho Books invoice payload
     const payload = {
@@ -34,12 +36,21 @@ r.post("/", async (req, res) => {
         item_order: idx + 1
       }))
     };
+    console.log("Zoho invoice payload:", JSON.stringify(payload, null, 2));
 
     const data = await createBooksInvoice(orgId, payload);
+    console.log("Zoho invoice created successfully:", data.invoice.invoice_id);
 
     res.json({ ok: true, zohoInvoiceId: data.invoice.invoice_id });
   } catch (err: any) {
-    res.status(500).json({ ok: false, error: err.message });
+    console.error("Order creation error:", err.response?.data || err.message);
+    const errorMsg = err.response?.data?.message || err.message || "Unknown error";
+    const statusCode = err.response?.status || 500;
+    res.status(statusCode).json({
+      ok: false,
+      error: errorMsg,
+      details: err.response?.data
+    });
   }
 });
 
